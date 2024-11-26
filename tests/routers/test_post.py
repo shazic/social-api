@@ -3,13 +3,13 @@ from httpx import AsyncClient
 
 
 async def create_post(body: str, async_client: AsyncClient) -> dict:
-    response = await async_client.post("/posts", json={"body": body})
+    response = await async_client.post("/post", json={"body": body})
     return response.json()
 
 
 @pytest.fixture()
 async def created_post(async_client: AsyncClient):
-    return create_post("Hello world", async_client)
+    return await create_post("Hello world", async_client)
 
 
 @pytest.mark.anyio
@@ -20,3 +20,18 @@ async def test_create_post(async_client: AsyncClient):
 
     assert response.status_code == 200
     assert {"id": 0, "body": body}.items() <= response.json().items()
+
+
+@pytest.mark.anyio
+async def test_create_post_missing_data(async_client: AsyncClient):
+    response = await async_client.post("/post")
+
+    assert response.status_code == 422
+
+
+@pytest.mark.anyio
+async def test_get_all_posts(async_client: AsyncClient, created_post: dict):
+    response = await async_client.get("/post")
+
+    assert response.status_code == 200
+    assert response.json() == [created_post]
