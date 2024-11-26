@@ -26,6 +26,6 @@ async def db() -> AsyncGenerator:
 
 
 @pytest.fixture()
-def async_client(client) -> AsyncGenerator:
+async def async_client(client) -> AsyncGenerator:
     async with AsyncClient(app=app, base_url=client.base_url) as ac:
         yield ac

@@ -2,7 +2,7 @@ import pytest
 from httpx import AsyncClient
 
 
-def create_post(body: str, async_client: AsyncClient) -> dict:
+async def create_post(body: str, async_client: AsyncClient) -> dict:
     response = await async_client.post("/posts", json={"body": body})
     return response.json()
 
