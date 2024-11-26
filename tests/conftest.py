@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from main import app
-from routers.posts import comments_table, post_table
+from routers.post import comments_table, post_table
 
 
 @pytest.fixture(scope="session")
